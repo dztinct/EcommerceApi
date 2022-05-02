@@ -1,10 +1,17 @@
-const { register } = require('../controllers/authUserController')
-
 const router = require('express').Router()
 
-router.get('/login', (req, res) => {
-    res.status(200).json({ message : "This is the login page"})
-})
+const { register, login} = require('../controllers/authUserController')
+const { getAllUsers, getSingleUser } = require('../controllers/userController')
+const { roles } = require('../middlewares/verifyAdmin')
+const verifyToken = require('../middlewares/verifyToken')
+
+router.post('/login', login)
 router.post('/register', register)
+
+router.use(verifyToken)
+
+router.get('/all-users', roles(false), getAllUsers)
+
+router.get('/single-user/:id', getSingleUser)
 
 module.exports = router 
