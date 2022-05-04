@@ -1,4 +1,4 @@
-exports.roles = (...role) => {
+exports.verifyAdmin = (...role) => {
     return (req, res, next) => {
         if(role.includes(req.user.isAdmin)){
             return next(

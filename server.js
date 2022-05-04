@@ -1,8 +1,8 @@
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
-const userRoutes = require('./routes/user.routes.js')
-// const productRoutes = require('./routes/product.routes.js')
+const userRoutes = require('./routes/user.routes')
+const productRoutes = require('./routes/product.routes')
 require('dotenv').config()
 
 const MONGO_URL = process.env.MONGO_URL
@@ -13,8 +13,10 @@ mongoose.connect(MONGO_URL, { useNewUrlParser : true }, () => {console.log('BD c
 app.use(express.urlencoded({extended : true}))
 app.use(express.json())
 
+app.use('/uploads', express.static('./uploads/products'))
+
 app.use('/api/user', userRoutes)
-// app.use('/api/product', productRoutes)
+app.use('/api/product', productRoutes )
 
 // const PORT = process.require.PORT || 5000
 
