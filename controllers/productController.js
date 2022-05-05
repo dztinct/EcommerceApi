@@ -1,6 +1,16 @@
 const Product = require('../model/Product')
 const upload = require('../config/upload')
+const cloudinary = require('cloudinary').v2
+const fs = require('fs')
+require('dotenv').config()
 
+
+//CLOUDINARY CONNECT
+cloudinary.config({
+    cloud_name : process.env.CLOUD_NAME,
+    api_key : process.env.API_KEY,
+    api_secret : process.env.API_SECRET
+})
 
 //CREATE PRODUCT
 exports.createProduct = async (req, res, next) => {
@@ -8,11 +18,13 @@ exports.createProduct = async (req, res, next) => {
     ImageFile(req, res, async(err) => {
         try {
             const { file } = req
+            const cloudFile = await cloudinary.uploader.upload(file.path)
+            fs.unlinkSync(`uploads/products/${file.filename}`)
             if(err){
                 throw err
             }
             const data = {
-                image : `uploads/products/${file.filename}`,
+                image : cloudFile.url,
                 description : req.body.description,
                 name : req.body.name,
                 price : req.body.price,
