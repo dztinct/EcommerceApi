@@ -6,8 +6,9 @@ const productSchema = new mongoose.Schema({
         required: [true, 'Enter product name']
     },
     category : {
-        type : String,
-        required : true
+        type : mongoose.Schema.Types.ObjectId,
+        required : true,
+        ref: 'Category'
     },
     price : {
         type : Number,

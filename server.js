@@ -3,6 +3,7 @@ const app = express()
 const mongoose = require('mongoose')
 const userRoutes = require('./routes/user.routes')
 const productRoutes = require('./routes/product.routes')
+const categoryRoutes = require('./routes/category.routes')
 require('dotenv').config()
 
 const MONGO_URL = process.env.MONGO_URL
@@ -16,7 +17,8 @@ app.use(express.json())
 app.use('/uploads', express.static('./uploads/products'))
 
 app.use('/api/user', userRoutes)
-app.use('/api/product', productRoutes )
+app.use('/api/product', productRoutes)
+app.use('/api/category', categoryRoutes)
 
 // const PORT = process.require.PORT || 5000
 

@@ -30,7 +30,7 @@ exports.createProduct = async (req, res, next) => {
 //GET ALL PRODUCTS
 exports.getAllProducts = async (req, res, next) => {
     try {
-        const allProducts = await Product.find()
+        const allProducts = await Product.find().sort({_id : -1}).populate({path : 'category', select : 'title-_id'})
         return res.status('201').json({data : allProducts})
     } catch (error) {
         return next(res.status(401).json({message : error}))
@@ -40,7 +40,7 @@ exports.getAllProducts = async (req, res, next) => {
 //GET SINGLE PRODUCT
 exports.getSingleProduct = async (req, res, next) => {
     try {
-        const singleProduct = await Product.findById(req.params.id)
+        const singleProduct = await Product.findById(req.params.id).sort({_id : -1}).populate({path : 'category', select : 'title-_id'})
         return res.status('201').json({data : singleProduct})    
     } catch (error) {
         return next(res.status('401').json({message : error}))
