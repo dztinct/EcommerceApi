@@ -1,61 +1,65 @@
 const Cart = require('../model/Cart')
 
-//CREATE CART
-exports.createCategory = async (req, res, next) => {
+//CREATE NEW CART
+exports.createCart = async (req, res, next) => {
     try {
-        const data = new Category({
-            title : req.body.title,
+        const { productId, quantity } = req.body
+        const cart  = new Cart({
+            userId : req.body.userId,
+            productId : req.body.productId,
         })
-        const createCategory = await data.save()
-        return res.status('201').json({data : createCategory})
-
+        const savedCart = await cart.save()
+        return res.status(201).json({data : savedCart})
     } catch (error) {
-        return next(new Error(error))
+        console.log(error)
+       return next(res.status(401).json({message : error}))
     }
 }
 
-//GET ALL CATEGORY
-exports.getAllCategory = async (req, res, next) => {
-    try {
-        const allCategory = await Category.find()
-        return res.status('201').json({data : allCategory})
+//GET USER CART
+exports.getUserCart = async (req, res, next) => {
+    try{
+    const userCart = await Cart.findById(req.params.userId).sort({_id : -1}).populate({path:'products', select : 'productId-_id'})
+    return res.status(200).json({data : userCart})
     } catch (error) {
-        return next(res.status(401).json({message : error}))
+        console.log(error)
+        return res.status(401).json({message : error})
     }
 }
 
-//GET SINGLE Category
-exports.getSingleCategory = async (req, res, next) => {
-    try {
-        const singleCategory = await Category.findById(req.params.id)
-        return res.status('201').json({data : singleCategory})    
-    } catch (error) {
-        return next(res.status('401').json({message : error}))
-    }
-}
-
-//UPDATE Category
-exports.updateCategory = async (req, res, next) => {
-    try {
-        updateData = {
-            title : req.body.title,
+//GET ALL CARTS
+exports.getAllCarts = async (req, res, next) => {
+    try{
+        const carts = await Cart.find().sort({_id : -1}).populate({path : 'product', select : 'productId-_id'})
+        res.status(200).json({data : carts})
+        } catch (error) {
+            console.log(error)
+            return next(res.status(401).json({message : 'Unable access all carts'}))
         }
-    const updatedCategory = await Category.findByIdAndUpdate(req.params.id, updateData, {new : true})
-        res.status(200).json({data : updatedCategory})
+    }
+
+    //UPDATE USER CART
+exports.updateCart = async (req, res, next) => {
+    try {
+        const updateData = {
+            userId : req.body.userId,
+            product : req.body.product
+        }
+        const updatedCart = await Cart.findByIdAndUpdate(req.params.userId, updateData, {new : true})
+            return res.status(200).json({data : updatedCart})
     } catch (error) {
         console.log(error)
-        return next(res.status(500).json(error))
+        return next((res.status(500).json(error)))
     }
 }
 
-//DELETE Category
-exports.deleteCategory = async (req, res, next) => {
+// DELETE USER CART
+exports.deleteCart = async (req, res, next) => {
     try {
-        const deleted = await Category.findByIdAndDelete(req.params.id)
-        res.status(200).json({message : 'Data has been deleted!'})
+        const rmCart = await Cart.findByIdAndDelete(req.params.userId)
+       return res.status(200).json({message : 'delete success'})
     } catch (error) {
         console.log(error)
-        return next(res.status('401').json({message : error}))
-
+        return next(res.status(401).json({message : error}))
     }
 }
