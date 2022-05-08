@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const productSchema = new mongoose.Schema({
     name : {
         type : String,
-        required: [true, 'Enter product name']
+        required: [true, 'Enter product name'],
     },
     category : {
         type : mongoose.Schema.Types.ObjectId,
@@ -21,7 +21,7 @@ const productSchema = new mongoose.Schema({
     description : {
         type : String,
         required : [true, 'Give a product description']
-    }
+    },
   },
   { timestamps : true}
 )
