@@ -49,24 +49,23 @@ exports.getAllCarts = async (req, res, next) => {
     //UPDATE USER CART
 exports.updateCart = async (req, res, next) => {
     try {
-        // const updateData = {
-        //     userId : req.body.userId,
-        //     productId : req.body.productId,
-        //     quantity : req.body.quantity
-        // }
-        const updatedCart = await Cart.find({userId : req.params.userId}, {$set : {quantity : 5}}, ) 
-        // const updatedCart = await Cart.find({userId : req.params.userId}, {productId : 1, quantity : 1, _id : 0}, updateData, {new : true}).sort({_id : -1}).populate({path:'productId', select : 'name-_id'})
-        return res.status(200).json({data : updatedCart})
+        updateData = {
+            "productId" : req.body.productId,
+            "quantity" : req.body.quantity
+        }
+                const updatedCart = await Cart.findByIdAndUpdate(req.params.id, {
+                    $set : updateData
+                },{new : true})
+                    res.status(200).json({data : updatedCart})
     } catch (error) {
-        console.log(error)
-        return next((res.status(500).json(error)))
+        return next((res.status(401).json(error)))
     }
 }
 
 // DELETE USER CART
 exports.deleteCart = async (req, res, next) => {
     try {
-        const rmCart = await Cart.findByIdAndDelete(req.params.userId)
+        const rmCart = await Cart.findByIdAndDelete(req.params.id)
        return res.status(200).json({message : 'delete success'})
     } catch (error) {
         console.log(error)

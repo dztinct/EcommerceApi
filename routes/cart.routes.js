@@ -11,7 +11,7 @@ router.get('/all', verifyAdmin(false), getAllCarts)
 router.get('/single/:userId', getUserCart)
 
 router.post('/create', createCart)
-router.delete('/delete/:userId', deleteCart)
-router.put('/update/:userId', updateCart)
+router.delete('/delete/:id', deleteCart)
+router.put('/update/:id', updateCart)
 
 module.exports = router
