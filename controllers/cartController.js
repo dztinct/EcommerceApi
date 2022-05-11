@@ -24,7 +24,6 @@ exports.getUserCart = async (req, res, next) => {
     if(userCart){
         return res.status(200).json({data : userCart})
     }else{
-        console.log(req.params.userId)
         return next(res.status(401).json({message : 'cannot fetch data'}))
     } 
     } catch (error) {

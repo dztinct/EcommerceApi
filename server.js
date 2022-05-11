@@ -5,6 +5,7 @@ const userRoutes = require('./routes/user.routes')
 const productRoutes = require('./routes/product.routes')
 const categoryRoutes = require('./routes/category.routes')
 const cartRoutes = require('./routes/cart.routes')
+const orderRoutes = require('./routes/order.routes')
 
 require('dotenv').config()
 
@@ -22,6 +23,7 @@ app.use('/api/user', userRoutes)
 app.use('/api/product', productRoutes)
 app.use('/api/category', categoryRoutes)
 app.use('/api/cart', cartRoutes)
+app.use('/api/order', orderRoutes)
 
 // const PORT = process.require.PORT || 5000
 
